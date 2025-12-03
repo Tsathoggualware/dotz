@@ -10,4 +10,7 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 ######Customize below here####
+if uwsm check may-start; then
+    exec uwsm start hyprland-uwsm.desktop
+fi
 hyfetch
