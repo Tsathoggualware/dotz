@@ -11,7 +11,6 @@ Scope {
     target: "bar"
 
     function toggleVis(): void {
-      // Toggle visibility of all bar instances
       for (let i = 0; i < Quickshell.screens.length; i++) {
         barInstances[i].visible = !barInstances[i].visible;
       }
@@ -22,7 +21,7 @@ Scope {
 
   Variants {
     model: Quickshell.screens
-  
+
     PanelWindow {
       id: bar
       property var modelData
@@ -34,13 +33,7 @@ Scope {
 
       color: "transparent"
 
-      Rectangle {
-        id: highlight
-        anchors.fill: parent
-        color: Theme.get.barBgColor
-      }
-
-      height: 30
+      implicitHeight: 30  // use implicitHeight, not height
 
       visible: true
 
@@ -50,59 +43,65 @@ Scope {
         left: true
         right: true
       }
-    
-RowLayout {
-    id: allBlocks
-    anchors.fill: parent
-    spacing: 0
 
-    // Left side
-    RowLayout {
-        id: leftBlocks
-        spacing: 10
-        Layout.alignment: Qt.AlignLeft
-        // Do NOT fill width here
-    }
+      RowLayout {
+        id: allBlocks
+        anchors.fill: parent
+        spacing: 0
 
-    // Spacer to push activeWorkspace to center
-    Item {
-        Layout.fillWidth: true
-    }
+        // Left side
+        RowLayout {
+          id: leftBlocks
+          spacing: 10
+          Layout.alignment: Qt.AlignLeft
+          // no fillWidth, so only as wide as needed
+          Blocks.Workspaces {}
+        }
 
-    // Active Workspace - centered by virtue of spacer on left and right
-    Blocks.ActiveWorkspace {
-        id: activeWorkspace
-        Layout.alignment: Qt.AlignHCenter
-        // no fillWidth
-        chopLength: {
+        // Spacer to push activeWorkspace to center
+        Item {
+          Layout.fillWidth: true
+        }
+
+        // Active workspace text
+        Blocks.ActiveWorkspace {
+          id: activeWorkspace
+          Layout.alignment: Qt.AlignHCenter
+
+          chopLength: {
             var space = Math.floor(bar.width - (rightBlocks.implicitWidth + leftBlocks.implicitWidth))
             return space * 0.08;
-        }
-        text: {
+          }
+
+          text: {
             var str = activeWindowTitle
             return str.length > chopLength ? str.slice(0, chopLength) + '...' : str;
-        }
-        color: {
+          }
+
+          color: {
             return Hyprland.focusedMonitor == Hyprland.monitorFor(screen)
-                ? "#FFFFFF" : "#CCCCCC"
+              ? "#FFFFFF" : "#CCCCCC"
+          }
         }
-    }
 
-    // Spacer to push rightBlocks to the right edge
-    Item {
-        Layout.fillWidth: true
-    }
+        // Spacer to push rightBlocks right
+        Item {
+          Layout.fillWidth: true
+        }
 
-    // Right side
-    RowLayout {
-        id: rightBlocks
-        spacing: 0
-        Layout.alignment: Qt.AlignRight
-        // Do NOT fill width here
-    }
-}
-
+        // Right side
+        RowLayout {
+          id: rightBlocks
+          spacing: 0
+          Layout.alignment: Qt.AlignRight
+          // no fillWidth here either
+          Blocks.SystemTray {}
+          Blocks.Memory {}
+          Blocks.Sound {}
+          Blocks.Date {}
+          Blocks.Time {}
+        }
+      }
     }
   }
 }
-
