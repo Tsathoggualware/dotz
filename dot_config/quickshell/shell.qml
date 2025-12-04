@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Quickshell
 import Quickshell.Io
 import QtQuick
@@ -44,4 +45,12 @@ Scope {
     repeat: true
     onTriggered: dateProc.running = true
   }
+=======
+//@ pragma UseQApplication
+import Quickshell
+import "bar"
+
+ShellRoot {
+    Bar {}
+>>>>>>> b014ab6 (Add .bashrc)
 }
