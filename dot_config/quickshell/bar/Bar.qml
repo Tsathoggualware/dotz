@@ -51,63 +51,57 @@ Scope {
         right: true
       }
     
-      RowLayout {
-        id: allBlocks
-        spacing: 0
-        anchors.fill: parent
-  
-        // Left side
-        RowLayout {
-          id: leftBlocks
-          spacing: 10
-          Layout.alignment: Qt.AlignLeft
-          Layout.fillWidth: true
+RowLayout {
+    id: allBlocks
+    anchors.fill: parent
+    spacing: 0
 
-          //Blocks.Icon {}
-          Blocks.Workspaces {}
-        }
+    // Left side
+    RowLayout {
+        id: leftBlocks
+        spacing: 10
+        Layout.alignment: Qt.AlignLeft
+        // Do NOT fill width here
+    }
 
-        Blocks.ActiveWorkspace {
-          id: activeWorkspace
-          Layout.leftMargin: 10
-          anchors.centerIn: undefined
+    // Spacer to push activeWorkspace to center
+    Item {
+        Layout.fillWidth: true
+    }
 
-          chopLength: {
+    // Active Workspace - centered by virtue of spacer on left and right
+    Blocks.ActiveWorkspace {
+        id: activeWorkspace
+        Layout.alignment: Qt.AlignHCenter
+        // no fillWidth
+        chopLength: {
             var space = Math.floor(bar.width - (rightBlocks.implicitWidth + leftBlocks.implicitWidth))
             return space * 0.08;
-          }
-
-          text: {
+        }
+        text: {
             var str = activeWindowTitle
             return str.length > chopLength ? str.slice(0, chopLength) + '...' : str;
-          }
-
-          color: {
+        }
+        color: {
             return Hyprland.focusedMonitor == Hyprland.monitorFor(screen)
-              ? "#FFFFFF" : "#CCCCCC"
-          }
+                ? "#FFFFFF" : "#CCCCCC"
         }
+    }
 
-        // Without this filler item, the active window block will be centered
-        // despite setting left alignment
-        Item {
-          Layout.fillWidth: true
-        }
-  
-        // Right side
-        RowLayout {
-          id: rightBlocks
-          spacing: 0
-          Layout.alignment: Qt.AlignRight
-          Layout.fillWidth: true
-  
-          Blocks.SystemTray {}
-          Blocks.Memory {}
-          Blocks.Sound {}
-          Blocks.Date {}
-          Blocks.Time {}
-        }
-      }
+    // Spacer to push rightBlocks to the right edge
+    Item {
+        Layout.fillWidth: true
+    }
+
+    // Right side
+    RowLayout {
+        id: rightBlocks
+        spacing: 0
+        Layout.alignment: Qt.AlignRight
+        // Do NOT fill width here
+    }
+}
+
     }
   }
 }
